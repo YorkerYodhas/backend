@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Assuming user-service runs on port 3000
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_URI: amqp://rabbitmq:5672
+
+  booking-service:
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"  # Assuming booking-service also runs on port 3000, but exposed as 3001 on the host
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_URI: amqp://rabbitmq:5672
+
+  rabbitmq:
+    image: "rabbitmq"
+    ports:
+      - "15672:15672"  # Management UI (optional)
+      - "5672:5672"    # Default RabbitMQ broker port

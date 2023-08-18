@@ -1,0 +1,16 @@
+# Node.js related
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDE related
+.idea/
+.vscode/
+*.swp
+
+# OS related
+.DS_Store
+Thumbs.db
+
+# Docker related
+*.env  # if you're using environment variables
