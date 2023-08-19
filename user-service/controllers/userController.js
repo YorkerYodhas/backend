@@ -1,27 +1,41 @@
 const userService = require('../services/userService');
-const admin = require('../config/firebaseConfig');
-
-const verifyFirebaseToken = async (req, res, next) => {
-    const idToken = req.headers.authorization;
-
-    try {
-        const decodedToken = await admin.auth().verifyIdToken(idToken);
-        if (decodedToken) {
-            req.user = decodedToken; // Attach the decoded payload to the request
-            next();
-        } else {
-            res.status(401).send('Unauthorized');
-        }
-    } catch (error) {
-        res.status(401).send('Unauthorized');
-    }
-};
 
 // CREATE user
 const createUser = async (req, res) => {
     try {
-        const user = await userService.createUser(req.body);
+        const { email, password, ...restOfData } = req.body;
+        const user = await userService.createUser(email, password, restOfData);
         res.status(201).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const token = await userService.loginUser(email, password);
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const signOutUser = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const result = await userService.signOutUser(email);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const sendPasswordResetEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const result = await userService.sendPasswordResetEmail(email);
+        res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -91,10 +105,12 @@ const deleteUserById = async (req, res) => {
 
 module.exports = {
     createUser,
+    loginUser,
+    signOutUser,
+    sendPasswordResetEmail,
     getAllUsers,
     findUserByEmail,
     getUserById,
     updateUserById,
-    deleteUserById,
-    verifyFirebaseToken
+    deleteUserById
 };
