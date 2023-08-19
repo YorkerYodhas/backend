@@ -3,8 +3,8 @@ const bookingController = require('../controllers/bookingController');
 
 const router = express.Router();
 
-// Use the verifyFirebaseToken middleware to protect the routes below this line
-router.use(userController.verifyFirebaseToken);
+// // Use the verifyFirebaseToken middleware to protect the routes below this line
+// router.use(userController.verifyFirebaseToken);
 
 // CREATE booking
 router.post('/', bookingController.createBooking);

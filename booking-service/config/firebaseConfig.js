@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 
 // Initialize Firebase with the service account
-const serviceAccount = require('path_to_your_firebase_serviceAccountKey.json');
+const serviceAccount = require('../techtriathlon-firebase-adminsdk-qrv5f-4db31f9a94.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

@@ -1,20 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const bookingRoutes = require('./routes/bookingRoutes');
+const { MONGO_URI } = require('./config/mongoConfig');  // Assuming you have a similar configuration as in the template
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI = 'YOUR_MONGODB_CONNECTION_STRING';
 
-// Middlewares
-app.use(bodyParser.json());
+// Middleware
+app.use(express.json());  // Using express.json() middleware which is a replacement for bodyParser.json()
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
-    .catch(error => console.error('Could not connect to MongoDB', error));
+    .catch(err => console.error('Could not connect to MongoDB', err));
 
 // Routes
 app.use('/bookings', bookingRoutes);
@@ -31,6 +30,5 @@ app.use((error, req, res, next) => {
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+    console.log(`Booking service started on port ${PORT}`);
 });
-

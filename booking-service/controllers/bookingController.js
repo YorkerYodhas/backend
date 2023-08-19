@@ -1,21 +1,4 @@
 const bookingService = require('../services/bookingService');
-const admin = require('../config/firebaseConfig');
-
-const verifyFirebaseToken = async (req, res, next) => {
-    const idToken = req.headers.authorization;
-
-    try {
-        const decodedToken = await admin.auth().verifyIdToken(idToken);
-        if (decodedToken) {
-            req.user = decodedToken; // Attach the decoded payload to the request
-            next();
-        } else {
-            res.status(401).send('Unauthorized');
-        }
-    } catch (error) {
-        res.status(401).send('Unauthorized');
-    }
-};
 
 // CREATE booking
 exports.createBooking = async (req, res) => {

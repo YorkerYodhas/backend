@@ -1,4 +1,4 @@
 module.exports = {
-    MONGO_URI: 'YOUR_MONGODB_ATLAS_URI'
+    MONGO_URI: 'mongodb+srv://NISHAD:NISHAD@cluster0.nt0lc.mongodb.net/?retryWrites=true&w=majority'
 };
 
