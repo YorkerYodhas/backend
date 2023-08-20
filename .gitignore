@@ -14,3 +14,4 @@ Thumbs.db
 
 # Docker related
 *.env  # if you're using environment variables
+booking-service/.env
