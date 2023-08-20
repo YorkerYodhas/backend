@@ -11,6 +11,7 @@ services:
       - user-service
       - booking-service
       - ship-service
+      - planet-service
 
   user-service:
     build:
@@ -38,6 +39,11 @@ services:
       - rabbitmq
     environment:
       RABBITMQ_URI: amqp://rabbitmq:5672
+
+  planet-service:
+    build:
+      context: ./planet-service
+      dockerfile: Dockerfile
 
   rabbitmq:
     image: "rabbitmq"
