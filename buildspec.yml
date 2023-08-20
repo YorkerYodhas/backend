@@ -4,11 +4,14 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
-      python: 3.11  # Add the Python runtime
+      python: 3.11
     commands:
       - echo "Installing Docker Compose..."
-      - pip install docker-compose  # Install docker-compose via pip
+      - pip install docker-compose
       - docker-compose --version
+      - echo "Starting Docker..."
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=overlay2 &
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   pre_build:
     commands:
       - echo "Logging in to Docker Hub (if required)..."
