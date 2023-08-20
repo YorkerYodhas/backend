@@ -1,14 +1,28 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - echo "Installing Docker Compose..."
+      - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      - chmod +x /usr/local/bin/docker-compose
+      - docker-compose --version
   pre_build:
     commands:
-      - echo "Fetching the latest code from the repository..."
-      - git pull
+      - echo "Logging in to Docker Hub (if required)..."
+      # - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD  # Uncomment if you're pushing images to Docker Hub
   build:
     commands:
-      - echo "Building Docker images using docker-compose..."
+      - echo "Building Docker images..."
       - docker-compose build
+  post_build:
+    commands:
+      - echo "Run any post-build steps here..."
+      - echo "$DEPLOY_KEY" > deploy_key.pem
+      - chmod 600 deploy_key.pem
+      - ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@$EC2_HOST "cd /path/to/your/repo && git pull && docker-compose up --build -d"
 
 artifacts:
   files: 
