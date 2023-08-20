@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const bookingRoutes = require('./routes/bookingRoutes');
 const { MONGO_URI } = require('./config/mongoConfig');  // Assuming you have a similar configuration as in the template
 const axios = require('axios');
-require('dotenv').config();
 
 const app = express();
 
